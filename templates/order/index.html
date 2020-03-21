@@ -1,0 +1,69 @@
+{% extends "order/base.html" %}
+
+{% block title %}
+  Menu
+{% endblock %}
+
+{% block body %}
+
+  <h3> pizza </h3>
+  <h4> Regular pizza </h4>
+
+  {% for pizza in regular_pizza %}
+    <li>{{pizza.topp}} Large: {{pizza.large}}, Small: {{pizza.small}}</li>
+  {% endfor %}
+
+  <h4> sicilian pizza </h4>
+
+  {% for pizza in sicilian_pizza %}
+    <li>{{pizza.topp}} Large: {{pizza.large}}, Small: {{pizza.small}}</li>
+  {% endfor %}
+
+  <h4> Toppings </h4>
+
+  {% for topp in toppings %}
+    <li> {{topp.topp_type}} </li>
+  {% endfor %}
+
+
+  <h4> subs </h4>
+
+  {% for sub in subs %}
+    <li>{{sub.dish_name}} Large: {{sub.large}}, Small: {{sub.small}}</li>
+  {% endfor %}
+
+  <h4> Dinner platters </h4>
+
+  {% for plate in platters %}
+    <li>{{plate.dish_name}} Large: {{plate.large}}, Small: {{plate.small}}</li>
+  {% endfor %}
+
+
+  <h4> Pasta </h4>
+
+  {% for pas in pasta %}
+    <li>{{pas.plate_name}}: for {{pas.price}}</li>
+  {% endfor %}
+
+
+  <h4> salads </h4>
+
+  {% for salad in salads %}
+    <li>{{salad.plate_name}}: for {{salad.price}}</li>
+  {% endfor %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a href="{% url 'logout' %}">Logout</a>
+{% endblock %}
