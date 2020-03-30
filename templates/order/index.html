@@ -1,4 +1,14 @@
 {% extends "order/base.html" %}
+{% load static %}
+
+{% block static %}
+  <script type="text/javascript" src="{% static 'order/index.js' %}"></script>
+  </script>
+  <script>
+    var csrf = "{{ csrf_token }}";
+  </script>
+
+  {% endblock %}
 
 {% block title %}
   Menu
@@ -6,7 +16,6 @@
 
 {% block body %}
 
-  <h3> pizza </h3>
   <h4> Regular pizza </h4>
 
   {% for pizza in regular_pizza %}
@@ -52,9 +61,94 @@
     <li>{{salad.plate_name}}: for {{salad.price}}</li>
   {% endfor %}
 
+  <h1> order </h1>
+
+ 
+<form action="{% url 'order' %}">
+  <div id="pizza_order">
+    <h3> Pizza order </h3>
+    <select name="pizza_type">
+      <option value="None"> pizza  </option>
+      <option value="sicilian Pizza">sicilian Pizza</option>
+      <option value="regular Pizza">regular Pizza</option>
+    </select>
+
+    <select name="pizza_size">
+      <option value="None"> Choose pizza size </option>
+      <option value="large"> Large </option>
+      <option value="small"> Small </option>
+    </select>
+
+    <label> pizza topping</label>
+    <select name="pizza_topp" id="pizza-selector">
+      <option value="None"> None </option>
+      {% for pizza in regular_pizza %}
+        <option value="{{pizza.topp}}">{{pizza.topp}}</option>
+      {% endfor %}
+    </select>
+
+    <div id="topp"></div>
+</div>
+
+<div id="paltters">
+  <h3> Dinner platters</h3>
+
+  <select name="dinner_platters">
+    <option value="None"> Dinner Platters  </option>
+    {% for plate in platters %}
+      <option value="{{plate.dish_name}}"> {{plate.dish_name}} </option>
+    {% endfor %}
+  </select>
+  <select name="plate_size">
+    <option value="None"> Choose pizza size </option>
+    <option value="large"> Large </option>
+    <option value="small"> Small </option>
+  </select>
+</div>
+
+<div id="subs">
+  <h3> Subs. </h3>
+
+  <select name="subs">
+    <option value="None">   </option>
+    {% for sub in subs %}
+      <option value="{{sub.dish_name}}"> {{sub.dish_name}} </option>
+    {% endfor %}
+  </select>
+  <select name="sub_size">
+    <option value="None"> Choose pizza size </option>
+    <option value="large"> Large </option>
+    <option value="small"> Small </option>
+  </select>
+</div>
 
 
+<div id="pasta">
+  <h3> Pasta </h3>
 
+  <select name="pasta">
+    <option value="None">   </option>
+    {% for pas in pasta %}
+      <option value="{{pas.plate_name}}"> {{pas.plate_name}} </option>
+    {% endfor %}
+  </select>
+</div>
+
+
+<div id="salads">
+  <h3> Salads </h3>
+
+  <select name="salads">
+    <option value="None"> Salads  </option>
+    {% for salad in salads %}
+      <option value="{{salad.plate_name}}"> {{salad.plate_name}} </option>
+    {% endfor %}
+  </select>
+</div>
+
+
+  <input type="submit" value="add to cart">
+</form>
 
 
 

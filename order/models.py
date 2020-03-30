@@ -58,6 +58,43 @@ class pasta_salads(models.Model):
 
 
 class order_list(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="order_users")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="order_users", blank=True, null=True)
+    pizza_ord = models.ForeignKey(pizza, on_delete=models.CASCADE, related_name="pizza_order", blank=True, null=True)
+    pizza_size = models.CharField(max_length=64, blank=True, null=True)
+    dinner_platters = models.ForeignKey(subs_platters, on_delete=models.CASCADE, related_name="platters", blank=True, null=True)
+    platter_size = models.CharField(max_length=64, blank=True, null=True)
+    subs = models.ForeignKey(subs_platters, on_delete=models.CASCADE, related_name="subs", blank=True, null=True)
+    sub_size = models.CharField(max_length=64, blank=True, null=True)
+    pasta = models.ForeignKey(pasta_salads, on_delete=models.CASCADE, related_name="pasta", blank=True, null=True)
+    salads = models.ForeignKey(pasta_salads, on_delete=models.CASCADE, related_name="salads", blank=True, null=True)
     total_price = models.FloatField()
-    
+    pizza_topping = models.CharField(max_length=64, blank=True, null=True)
+
+    def __str__(self):
+        if self.pizza_ord == None:
+            pizza_syn = "No pizza ordered"
+        else:
+            pizza_syn = f" {self.pizza_size},{self.pizza_ord.type} with {self.pizza_ord.topp} "
+
+        if self.dinner_platters == None:
+            platter_syn = "No platters ordered"
+        else:
+            platter_syn = f" {self.platter_size},{self.dinner_platters.dish_name} "
+
+        if self.subs == None:
+            subs_syn = "No subs ordered"
+        else:
+            subs_syn = f" {self.sub_size},{self.subs.dish_name} "
+
+
+        if self.pasta == None:
+            pasta_syn = "No pasta ordered"
+        else:
+            pasta_syn = f" {self.pasta.plate_name} "
+
+        if self.salads == None:
+            salads_syn = "No salads ordered"
+        else:
+            salads_syn = f" {self.salads.plate_name} "
+
+        return f"{self.user.username} ordered: {pizza_syn}, {platter_syn}, {subs_syn}, {pasta_syn}, {salads_syn}"
