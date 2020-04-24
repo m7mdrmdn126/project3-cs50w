@@ -8,15 +8,22 @@ from .models import pizza, toppings, subs_platters, pasta_salads, order_list
 import json
 
 # Create your views here.
-
 message = ''
 
 def index(request):
     # checking if the user is authintcated and if not make him back to the login menu 
     if not request.user.is_authenticated :
         return render(request, 'order/login.html')
+        
 
     # getting the data frrom the data base and send
+    try:
+        user = order_list.objects.get(user = request.user)
+    except :
+        user = ''
+
+    print(user)
+
     context = {
         "regular_pizza":pizza.objects.filter(type='regular Pizza'),
         "sicilian_pizza":pizza.objects.filter(type='sicilian Pizza'),
@@ -26,12 +33,15 @@ def index(request):
         "pasta":pasta_salads.objects.filter(name="pasta"),
         "salads":pasta_salads.objects.filter(name="salads"),
         "message":message,
+        "order":user,
+        "username":request.user,
     }
-
+    print(message)
     return render(request, "order/index.html", context)
 
 
 def order(request):
+    global message
     # this the function responsable to add the orders to the data base 
 
     # making an order list object 
@@ -62,10 +72,12 @@ def order(request):
                 order_com.pizza_topping = topp 
         elif pizza_topp == "None":
             message = "please select topping number for pizza."
+            print(message)
             return HttpResponseRedirect(reverse("index"))
         elif pizza_size == "None":
             message = "please select size for pizza."
             return HttpResponseRedirect(reverse("index"))
+        
 
     else:
         pizza_ex = False 
@@ -163,9 +175,6 @@ def order(request):
 
     order_com.save()
     return  HttpResponseRedirect(reverse("index"))
-
-        
-
 
 
 
